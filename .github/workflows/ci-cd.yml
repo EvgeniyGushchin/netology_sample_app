@@ -52,7 +52,7 @@ jobs:
       - name: Set up Kubernetes
         uses: azure/setup-kubectl@v4
         with:
-          version: 'v1.31.0'
+          version: 'v1.30.0'
 
       - name: Extract version from commit messages
         run: |
@@ -68,7 +68,7 @@ jobs:
         if: env.DEPLOY == 'false'
        
         run: |
-          sed -i "s|image: egushchin555/diplom_app:.*|image: ${{ env.IMAGE_TAG }}|" ./deployment.yml
+          sed -i "s|image: egushchin555/diplom_app:.*|image: ${{ env.IMAGE_TAG }}:${{ env.VERSION }}|" ./deployment.yml
         env:
           IMAGE_TAG: egushchin555/diplom_app:${{ env.VERSION }}
       
