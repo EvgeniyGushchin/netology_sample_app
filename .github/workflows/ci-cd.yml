@@ -63,15 +63,16 @@ jobs:
             echo "No version found in the commit message"
             exit 1
           fi
-
       - name: Replace image tag in deployment.yml
-        if: env.DEPLOY == 'false'
-       
         run: |
+          if [ ! -f ./deployment.yml ]; then
+            echo "deployment.yml not found in the current directory"
+            exit 1
+          fi
           sed -i "s|image: egushchin555/diplom_app:.*|image: ${{ env.IMAGE_TAG }}:${{ env.VERSION }}|" ./deployment.yml
-        env:
-          IMAGE_TAG: egushchin555/diplom_app:${{ env.VERSION }}
-      
+      - name: Echo deployment.yml
+        run: |
+          cat ./deployment.yml
       - name: Create kubeconfig
         run: |
           mkdir -p $HOME/.kube/
